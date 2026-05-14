@@ -1,0 +1,143 @@
+#define trigPin 9
+#define echoPin 10
+
+#define LF1 2
+#define LF2 3
+
+#define LR1 4
+#define LR2 5
+
+#define RF1 6
+#define RF2 7
+
+#define RR1 8
+#define RR2 11
+
+long duration;
+int distance;
+
+void setup() {
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  pinMode(LF1, OUTPUT);
+  pinMode(LF2, OUTPUT);
+
+  pinMode(LR1, OUTPUT);
+  pinMode(LR2, OUTPUT);
+
+  pinMode(RF1, OUTPUT);
+  pinMode(RF2, OUTPUT);
+
+  pinMode(RR1, OUTPUT);
+  pinMode(RR2, OUTPUT);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  distance = getDistance();
+
+  Serial.print("Distance: ");
+  Serial.println(distance);
+
+  if (distance > 20) {
+
+    moveForward();
+
+  } else {
+
+    stopRobot();
+    delay(300);
+
+    moveBackward();
+    delay(700);
+
+    stopRobot();
+    delay(300);
+
+    turnRight();
+    delay(700);
+
+    stopRobot();
+    delay(300);
+  }
+}
+
+int getDistance() {
+
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+
+  distance = duration * 0.034 / 2;
+
+  return distance;
+}
+
+void moveForward() {
+
+  digitalWrite(LF1, HIGH);
+  digitalWrite(LF2, LOW);
+
+  digitalWrite(LR1, HIGH);
+  digitalWrite(LR2, LOW);
+
+  digitalWrite(RF1, HIGH);
+  digitalWrite(RF2, LOW);
+
+  digitalWrite(RR1, HIGH);
+  digitalWrite(RR2, LOW);
+}
+
+void moveBackward() {
+
+  digitalWrite(LF1, LOW);
+  digitalWrite(LF2, HIGH);
+
+  digitalWrite(LR1, LOW);
+  digitalWrite(LR2, HIGH);
+
+  digitalWrite(RF1, LOW);
+  digitalWrite(RF2, HIGH);
+
+  digitalWrite(RR1, LOW);
+  digitalWrite(RR2, HIGH);
+}
+
+void turnRight() {
+
+  digitalWrite(LF1, HIGH);
+  digitalWrite(LF2, LOW);
+
+  digitalWrite(LR1, HIGH);
+  digitalWrite(LR2, LOW);
+
+  digitalWrite(RF1, LOW);
+  digitalWrite(RF2, HIGH);
+
+  digitalWrite(RR1, LOW);
+  digitalWrite(RR2, HIGH);
+}
+
+void stopRobot() {
+
+  digitalWrite(LF1, LOW);
+  digitalWrite(LF2, LOW);
+
+  digitalWrite(LR1, LOW);
+  digitalWrite(LR2, LOW);
+
+  digitalWrite(RF1, LOW);
+  digitalWrite(RF2, LOW);
+
+  digitalWrite(RR1, LOW);
+  digitalWrite(RR2, LOW);
+}
